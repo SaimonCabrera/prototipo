@@ -113,7 +113,7 @@ function handleBotOption(option) {
             buttonVoltarInicio2.innerText = 'Voltar ao Início';
             buttonVoltarInicio2.onclick = () => showMainOptions();
 
-            buttonContainer.appendChild(buttonVoltarInicio2S);
+            buttonContainer.appendChild(buttonVoltarInicio2);
 
             chatBody.appendChild(buttonContainer);
             chatBody.scrollTop = chatBody.scrollHeight; // Scroll para a última mensagem
