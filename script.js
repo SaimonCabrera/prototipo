@@ -16,7 +16,7 @@ function sendMessage() {
     const userMessage = inputField.value;
 
     if (userMessage.trim() === '') return;
-
+    
     // Adicionar mensagem do usuário
     const userMessageElement = document.createElement('div');
     userMessageElement.classList.add('message', 'user-message');
@@ -31,26 +31,11 @@ function sendMessage() {
         setTimeout(() => {
             const botMessageElement = document.createElement('div');
             botMessageElement.classList.add('message', 'bot-message');
-            botMessageElement.innerText = `Bem-vindo ao bot, ${contactName}! Como posso ajudar? Escolha uma das opções abaixo:`;
+            botMessageElement.innerText = `Olá! Eu sou Celine, um robô que ajuda a encontrar médicos e farmácias em Alegrete. \n Escolha uma das opções abaixo para eu mostrar o que encontro na cidade.`;
             chatBody.appendChild(botMessageElement);
 
-            // Adicionar botões
-            const buttonContainer = document.createElement('div');
-            buttonContainer.classList.add('bot-buttons');
-
-            const button1 = document.createElement('button');
-            button1.classList.add('bot-button');
-            button1.innerText = 'Médicos';
-            button1.onclick = () => handleBotOption('Médicos');
-
-            const button2 = document.createElement('button');
-            button2.classList.add('bot-button');
-            button2.innerText = 'Farmácias';
-            button2.onclick = () => handleBotOption('Farmácias');
-
-            buttonContainer.appendChild(button1);
-            buttonContainer.appendChild(button2);
-            chatBody.appendChild(buttonContainer);
+            // Adicionar botões principais
+            showMainOptions();
 
             chatBody.scrollTop = chatBody.scrollHeight; // Scroll para a última mensagem
         }, 1000);
@@ -62,6 +47,28 @@ function sendMessage() {
     chatBody.scrollTop = chatBody.scrollHeight;
 }
 
+// Função para mostrar as opções principais ('Médicos' e 'Farmácias')
+function showMainOptions() {
+    const chatBody = document.getElementById('chat-body');
+
+    const buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('bot-buttons');
+
+    const buttonMedicos = document.createElement('button');
+    buttonMedicos.classList.add('bot-button');
+    buttonMedicos.innerText = 'Médicos';
+    buttonMedicos.onclick = () => handleBotOption('Médicos');
+
+    const buttonFarmacias = document.createElement('button');
+    buttonFarmacias.classList.add('bot-button');
+    buttonFarmacias.innerText = 'Farmácias';
+    buttonFarmacias.onclick = () => handleBotOption('Farmácias');
+
+    buttonContainer.appendChild(buttonMedicos);
+    buttonContainer.appendChild(buttonFarmacias);
+    chatBody.appendChild(buttonContainer);
+}
+
 // Função para lidar com as opções selecionadas
 function handleBotOption(option) {
     const chatBody = document.getElementById('chat-body');
@@ -69,18 +76,18 @@ function handleBotOption(option) {
     // Mostrar a escolha do usuário
     const userChoiceElement = document.createElement('div');
     userChoiceElement.classList.add('message', 'user-message');
-    userChoiceElement.innerText = `Você escolheu: ${option}`;
+    userChoiceElement.innerText = `${option}`;
     chatBody.appendChild(userChoiceElement);
 
-    // Responder de acordo com a opção
     if (option === 'Médicos') {
+        // Responder com áreas médicas
         setTimeout(() => {
             const botResponseElement = document.createElement('div');
             botResponseElement.classList.add('message', 'bot-message');
             botResponseElement.innerText = 'Escolha uma das áreas médicas abaixo:';
             chatBody.appendChild(botResponseElement);
 
-            // Adicionar mais 4 sub-opções (áreas médicas), dois por linha
+            // Adicionar sub-opções (áreas médicas)
             const buttonContainer = document.createElement('div');
             buttonContainer.classList.add('bot-buttons');
 
@@ -92,6 +99,21 @@ function handleBotOption(option) {
                 button.onclick = () => handleSubOption(area);
                 buttonContainer.appendChild(button);
             });
+
+            // Adicionar botão para ver todas as especialidades
+            const buttonVerTodas = document.createElement('button');
+            buttonVerTodas.classList.add('bot-button');
+            buttonVerTodas.innerText = 'Ver todas as especialidades';
+            buttonVerTodas.onclick = () => showAllSpecialties();
+            buttonContainer.appendChild(buttonVerTodas);
+
+
+            const buttonVoltarInicio2 = document.createElement('button');
+            buttonVoltarInicio2.classList.add('bot-button');
+            buttonVoltarInicio2.innerText = 'Voltar ao Início';
+            buttonVoltarInicio2.onclick = () => showMainOptions();
+
+            buttonContainer.appendChild(buttonVoltarInicio2S);
 
             chatBody.appendChild(buttonContainer);
             chatBody.scrollTop = chatBody.scrollHeight; // Scroll para a última mensagem
@@ -129,6 +151,14 @@ function handleBotOption(option) {
                 chatBody.appendChild(farmaciaElement);
             });
 
+            // Adicionar botão 'Voltar ao Início'
+            const buttonVoltarInicio = document.createElement('button');
+            buttonVoltarInicio.classList.add('bot-button');
+            buttonVoltarInicio.innerText = 'Voltar ao Início';
+            buttonVoltarInicio.onclick = () => showMainOptions();
+            chatBody.appendChild(buttonVoltarInicio);
+
+
             chatBody.scrollTop = chatBody.scrollHeight; // Scroll para a última mensagem
         }, 1000);
     }
@@ -143,7 +173,7 @@ function handleSubOption(areaMedica) {
     // Mostrar a escolha do usuário
     const userChoiceElement = document.createElement('div');
     userChoiceElement.classList.add('message', 'user-message');
-    userChoiceElement.innerText = `Você escolheu: ${areaMedica}`;
+    userChoiceElement.innerText = `${areaMedica}`;
     chatBody.appendChild(userChoiceElement);
 
     // Dados dos médicos por área médica
@@ -171,49 +201,123 @@ function handleSubOption(areaMedica) {
             { nome: 'Dr. Felipe', endereco: 'Rua das Crianças', telefone: '787878' },
             { nome: 'Dra. Beatriz', endereco: 'Rua das Mães', telefone: '898989' },
             { nome: 'Dr. Victor', endereco: 'Rua das Estrelas', telefone: '909090' }
-        ]
+        ],
+        // Adicione mais especialidades conforme necessário
     };
 
     // Adicionar informações dos médicos
     const medicosArea = medicos[areaMedica] || [];
     setTimeout(() => {
-        medicosArea.forEach(medico => {
-            const medicoElement = document.createElement('div');
-            medicoElement.classList.add('message', 'bot-message');
-            medicoElement.innerHTML = `
-                <strong>Nome:</strong> ${medico.nome}<br>
-                <strong>Endereço:</strong> ${medico.endereco}<br>
-                <strong>Telefone:</strong> ${medico.telefone}<br>
-            `;
+        if (medicosArea.length > 0) {
+            medicosArea.forEach(medico => {
+                const medicoElement = document.createElement('div');
+                medicoElement.classList.add('message', 'bot-message');
+                medicoElement.innerHTML = `
+                    <strong>Nome:</strong> ${medico.nome}<br>
+                    <strong>Endereço:</strong> ${medico.endereco}<br>
+                    <strong>Telefone:</strong> ${medico.telefone}<br>
+                `;
 
-            const buttonFalar = document.createElement('button');
-            buttonFalar.innerText = `Falar com ${medico.nome}`;
-            buttonFalar.onclick = () => speakWithUser(medico.nome);
-            medicoElement.appendChild(buttonFalar);
+                const buttonFalar = document.createElement('button');
+                buttonFalar.innerText = `Falar com ${medico.nome}`;
+                buttonFalar.onclick = () => speakWithUser(medico.nome);
+                medicoElement.appendChild(buttonFalar);
 
-            chatBody.appendChild(medicoElement);
-        });
+                chatBody.appendChild(medicoElement);
+            });
+        } else {
+            const semDadosElement = document.createElement('div');
+            semDadosElement.classList.add('message', 'bot-message');
+            semDadosElement.innerText = `Desculpe, não há médicos cadastrados.`;
+            chatBody.appendChild(semDadosElement);
+        }
 
-        // Botão para voltar ao início
-        const voltarBotao = document.createElement('button');
-        voltarBotao.innerText = 'Voltar ao Início';
-        voltarBotao.onclick = backToBot;
-        chatBody.appendChild(voltarBotao);
-        
+        // Adicionar botões 'Voltar' e 'Ver todas as especialidades'
+        const buttonContainer = document.createElement('div');
+        buttonContainer.classList.add('bot-buttons');
+
+       
+
+        const buttonVerTodas = document.createElement('button');
+        buttonVerTodas.classList.add('bot-button');
+        buttonVerTodas.innerText = 'Ver todas as especialidades';
+        buttonVerTodas.onclick = () => showAllSpecialties();
+
+        const buttonVoltarInicio2 = document.createElement('button');
+        buttonVoltarInicio2.classList.add('bot-button');
+        buttonVoltarInicio2.innerText = 'Voltar ao Início';
+        buttonVoltarInicio2.onclick = () => showMainOptions();
+
+
+        buttonContainer.appendChild(buttonVerTodas);
+        buttonContainer.appendChild(buttonVoltarInicio2);
+
+        chatBody.appendChild(buttonContainer);
 
         chatBody.scrollTop = chatBody.scrollHeight; // Scroll para a última mensagem
     }, 1000);
 }
 
+// Função para mostrar todas as especialidades médicas
+function showAllSpecialties() {
+    const chatBody = document.getElementById('chat-body');
+
+    // Informar que está listando todas as especialidades
+    const botResponseElement = document.createElement('div');
+    botResponseElement.classList.add('message', 'bot-message');
+    botResponseElement.innerText = 'Aqui estão todas as especialidades médicas disponíveis:';
+    chatBody.appendChild(botResponseElement);
+
+    // Lista completa das especialidades
+    const todasEspecialidades = [
+        'Cardiologia',
+        'Clínica Geral',
+        'Dermatologia',
+        'Ginecologia e Obstetrícia',
+        'Neurologia',
+        'Oftalmologia',
+        'Oncologia',
+        'Ortopedia',
+        'Pediatria',
+        'Psiquiatria'
+    ];
+
+    // Adicionar botões para cada especialidade
+    const buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('bot-buttons');
+
+    todasEspecialidades.forEach(especialidade => {
+        const button = document.createElement('button');
+        button.classList.add('bot-button');
+        button.innerText = especialidade;
+        button.onclick = () => handleSubOption(especialidade);
+        buttonContainer.appendChild(button);
+    });
+
+    // Adicionar botões  e 'Voltar ao Início'
+   
+
+
+    const buttonVoltarInicio = document.createElement('button');
+    buttonVoltarInicio.classList.add('bot-button');
+    buttonVoltarInicio.innerText = 'Voltar ao Início';
+    buttonVoltarInicio.onclick = () => showMainOptions();
+
+    buttonContainer.appendChild(buttonVoltarInicio);
+
+    chatBody.appendChild(buttonContainer);
+
+    chatBody.scrollTop = chatBody.scrollHeight; // Scroll para a última mensagem
+}
 
 // Função para criar a nova tela de conversa com o médico ou farmácia
-function openPrivateChat(entityName) {
+function openPrivateChat(entityNumber) {
     // Ocultar a tela do bot e mostrar a nova tela de conversa
     document.getElementById('chat-screen').style.display = 'none';
     document.getElementById('private-chat-screen').style.display = 'flex';
 
     // Definir o nome da entidade na nova tela de conversa
-    document.getElementById('private-contact-name').innerText = `Conversando com ${entityName}`;
+    document.getElementById('private-contact-name').innerText = `${entityNumber}`;
 
     // Limpar o histórico da nova tela de conversa
     document.getElementById('private-chat-body').innerHTML = '';
@@ -246,7 +350,6 @@ function sendPrivateMessage() {
         chatBody.scrollTop = chatBody.scrollHeight; // Scroll para a última mensagem
     }, 1000);
 }
-  
 
 // Função para voltar à tela do bot
 function backToBot() {
@@ -294,6 +397,7 @@ function sendMessageToEntity(name, message) {
 function speakWithPharmacy(name) {
     openPrivateChat(name);
 }
+
 // Função para abrir a conversa privada ao clicar no botão de falar com o médico/farmácia
 function speakWithUser(name) {
     openPrivateChat(name);

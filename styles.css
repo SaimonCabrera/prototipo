@@ -58,12 +58,23 @@ body {
 }
 
 .chat-body {
-    flex: 1;
+    flex: none;
     padding: 10px;
     background-color: #e5ddd5;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+}
+.chat-screen {
+    
+
+    flex: none;
+    padding: 10px;
+    background-color: #e5ddd5;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+
 }
 
 .message {
@@ -182,11 +193,7 @@ button:hover {
         padding: 8px;
     }
 }
-.chat-screen {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
+
 
 .chat-header {
     background-color: #4CAF50;
@@ -205,12 +212,6 @@ button:hover {
     cursor: pointer;
 }
 
-.chat-body {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-    background-color: #f4f4f4;
-}
 
 .chat-footer {
     display: flex;
@@ -231,4 +232,10 @@ button:hover {
     color: white;
     border: none;
     cursor: pointer;
+}
+.chat-body {
+    padding: 1rem; /* Equivale a p-3 */
+    background-color: #f8f9fa; /* Cor de fundo clara (bg-light) */
+    max-height: 60vh; /* Ajuste responsivo da altura */
+    overflow-y: auto; /* Scroll vertical */
 }
